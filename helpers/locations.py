@@ -28,10 +28,6 @@ def map_county_id_to_state(geo_id):
     # Return the corresponding state name
     return fips_to_state.get(state_fips, "Unknown State")
 
-# def gen_state_column(df):
-#     df["state"] = df[]
-#     return df
-
 
 @pd.api.extensions.register_dataframe_accessor("generate_state_column")
 class StateColumnGenerator:
