@@ -2,7 +2,7 @@ import pandas as pd
 from functools import cache
 
 class CountyNormalizer:
-    def __init__(self, population_path='../data/population'):
+    def __init__(self, population_path='data/population'):
         self.data2000_09 = CountyNormalizer.clean(pd.read_csv(f'{population_path}/co-est2009-alldata.csv', dtype={c: str for c in ['COUNTY', 'STATE', 'SUMLEV']},  encoding='ISO-8859-1'))
         self.data2010_19 = CountyNormalizer.clean(pd.read_csv(f'{population_path}/co-est2020-alldata.csv', dtype={c: str for c in ['COUNTY', 'STATE', 'SUMLEV']}, encoding='ISO-8859-1'))
         self.data2020_23 = CountyNormalizer.clean(pd.read_csv(f'{population_path}/co-est2023-alldata.csv', dtype={c: str for c in ['COUNTY', 'STATE', 'SUMLEV']}, encoding='ISO-8859-1'))
@@ -39,6 +39,7 @@ class CountyNormalizer:
         year: int
         '''
         countyId = FIPS
+        year = int(year)
         assert isinstance(year, int) and isinstance(countyId, str)
         assert 2000 <= year <= 2023
         if f'{countyId}{year}' in self.cache:
@@ -57,6 +58,10 @@ class CountyNormalizer:
             data = self.data2020_23
             id_to_row = self.id_to_row_20_23
         
+        # print(year, )
+        if countyId not in id_to_row:
+            # print(f"unknwon {countyId} in {year}")
+            return None
+
         self.cache[f'{countyId}{year}'] = data[f'POPESTIMATE{year}'].iloc[id_to_row[countyId]]
         return self.cache[f'{countyId}{year}']
-        
