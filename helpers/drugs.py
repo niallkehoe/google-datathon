@@ -33,7 +33,7 @@ def get_drugs_dfs(drug_names: List[str]) -> pd.DataFrame:
                 df_drug, 
                 on=["Date", "placeDcid"], 
                 how="outer", 
-                suffixes=(None, "_dup")
+                suffixes=(None, "_dup"),
             )
 
             # Drop the duplicate `placeName` column, if it exists
